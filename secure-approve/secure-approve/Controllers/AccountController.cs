@@ -21,8 +21,9 @@ namespace secure_approve.Controllers
         {
             _context = context;
         }
-        public IActionResult Login()
-        {           
+        public IActionResult Login(string errormessage)
+        {
+            ViewBag.ErrorMessage = errormessage;
             return View();
         }
         [HttpPost]
@@ -58,6 +59,28 @@ namespace secure_approve.Controllers
                     }
                 }
             }
+            return View();
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("SignOutCallback", "Account");
+        }
+
+        public ActionResult SignOutCallback()
+        {
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    // Redirect to home page if the user is authenticated.
+            //    return RedirectToAction("Index", "Home");
+            //}
+
+            return View();
+        }
+
+        public ActionResult AccessDenied()
+        {
             return View();
         }
 
